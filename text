@@ -1,0 +1,9 @@
+daycoin-platform/
+├── index.html
+├── login.html (combined login/register)
+├── dashboard.html
+├── admin.html
+├── firebase-config.js (NEW)
+├── auth.js (NEW)
+├── firestore-rules.txt (NEW)
+└── README.md (NEW)
