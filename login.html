@@ -735,20 +735,20 @@
         // ================================================================
         // 🔥 FIREBASE CONFIGURATION - REPLACE WITH YOUR OWN
         // ================================================================
-        // Go to: Firebase Console → Project Settings → Your apps → Config
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+  
+const firebaseConfig = {
+  apiKey: "AIzaSyA869-TweVLbfVqw5kpoQT_ifGIr-TTSfQ",
+  authDomain: "my-day-65219.firebaseapp.com",
+  projectId: "my-day-65219",
+  storageBucket: "my-day-65219.firebasestorage.app",
+  messagingSenderId: "686930969383",
+  appId: "1:686930969383:web:8fb39f48fae49be56c5f02",
+  measurementId: "G-0VP3PF44BQ"
+};
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
         // Enable offline persistence
         db.enablePersistence()
