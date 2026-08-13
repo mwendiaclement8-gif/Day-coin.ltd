@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day Coin — Grow Your Wealth Through Gaming</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg-primary: #0a0b1a;
+            --bg-secondary: #111328;
+            --bg-card: rgba(17, 19, 40, 0.75);
+            --bg-glass: rgba(255, 255, 255, 0.04);
+            --border-glass: rgba(255, 255, 255, 0.08);
+
+            --cyan: #00f0ff;
+            --cyan-dim: rgba(0, 240, 255, 0.15);
+            --gold: #ffd700;
+            --gold-dim: rgba(255, 215, 0, 0.15);
+            --purple: #7b2ffc;
+            --purple-dim: rgba(123, 47, 252, 0.20);
+            --pink: #ff2d95;
+            --green: #00ff87;
+            --red: #ff4757;
+
+            --text-primary: #f0f4ff;
+            --text-secondary: rgba(240, 244, 255, 0.7);
+            --text-muted: rgba(240, 244, 255, 0.4);
+
+            --radius: 20px;
+            --radius-sm: 12px;
+            --shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 60px rgba(0, 240, 255, 0.08);
+
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--cyan);
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--cyan-dim);
+        }
+
+        /* ===== UTILITY ===== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--cyan);
+            background: var(--cyan-dim);
+            padding: 6px 18px;
+            border-radius: 100px;
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        .section-title .highlight {
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-title .gold {
+            background: linear-gradient(135deg, var(--gold), #f0a500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 560px;
+            line-height: 1.7;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== GLOW ANIMATIONS ===== */
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                box-shadow: 0 0 30px var(--cyan-dim);
+            }
+            50% {
+                box-shadow: 0 0 60px var(--cyan-dim), 0 0 90px rgba(0, 240, 255, 0.05);
+            }
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-14px);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin-slow {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== BACKGROUND PARTICLES ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 300px 300px;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 11, 26, 0.75);
+            backdrop-filter: blur(20px) saturate(1.4);
+            border-bottom: 1px solid var(--border-glass);
+            transition: var(--transition);
+        }
+        .navbar.scrolled {
+            background: rgba(10, 11, 26, 0.92);
+            backdrop-filter: blur(24px) saturate(1.6);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .nav-brand .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+            box-shadow: 0 0 30px var(--cyan-dim);
+        }
+        .nav-brand span {
+            background: linear-gradient(135deg, var(--cyan), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            transition: var(--transition);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--cyan);
+            transition: var(--transition);
+            box-shadow: 0 0 20px var(--cyan);
+        }
+        .nav-links a:hover {
+            color: #fff;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--gold), #f0a500);
+            color: #0a0b1a;
+            font-weight: 700;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px var(--gold-dim);
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: #fff;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content {
+            animation: slide-up 0.8s ease forwards;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--cyan);
+            background: var(--cyan-dim);
+            padding: 8px 20px;
+            border-radius: 100px;
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            margin-bottom: 20px;
+        }
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse-glow 1.8s infinite;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.6rem, 6vw, 4.8rem);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+        .hero-title .gradient-text {
+            background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 300% 300%;
+            animation: shimmer 6s ease infinite;
+        }
+        .hero-title .gold-text {
+            background: linear-gradient(135deg, var(--gold), #f0a500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 520px;
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            color: #fff;
+            box-shadow: 0 0 40px var(--cyan-dim);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 60px var(--cyan-dim), 0 0 80px rgba(123, 47, 252, 0.15);
+        }
+
+        .btn-secondary {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }
+        .btn-secondary:hover {
+            border-color: var(--cyan-dim);
+            background: rgba(0, 240, 255, 0.06);
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px var(--cyan-dim);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), #f0a500);
+            color: #0a0b1a;
+            font-weight: 700;
+            box-shadow: 0 0 40px var(--gold-dim);
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 60px var(--gold-dim), 0 0 80px rgba(255, 215, 0, 0.1);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-glass);
+        }
+        .hero-stat .number {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .hero-stat .number .plus {
+            color: var(--cyan);
+        }
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-ring {
+            position: relative;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 240, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-ring .ring-orb {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--gold), #f0a500);
+            box-shadow: 0 0 100px var(--gold-dim), 0 0 200px rgba(255, 215, 0, 0.15);
+            animation: pulse-glow 3s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #0a0b1a;
+            position: relative;
+        }
+        .hero-ring .ring-orb .day-coin-label {
+            position: absolute;
+            bottom: -40px;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            background: var(--bg-glass);
+            padding: 6px 18px;
+            border-radius: 100px;
+            border: 1px solid var(--gold-dim);
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+
+        .hero-ring .orbit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px dashed rgba(0, 240, 255, 0.1);
+            animation: spin-slow 20s linear infinite;
+        }
+        .hero-ring .orbit:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            animation-duration: 30s;
+            animation-direction: reverse;
+            border-color: rgba(255, 215, 0, 0.06);
+        }
+        .hero-ring .orbit:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            animation-duration: 40s;
+            border-color: rgba(123, 47, 252, 0.06);
+        }
+
+        .hero-ring .orbit-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 30px var(--cyan);
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .hero-ring .orbit-dot.gold {
+            background: var(--gold);
+            box-shadow: 0 0 30px var(--gold-dim);
+        }
+        .hero-ring .orbit-dot.purple {
+            background: var(--purple);
+            box-shadow: 0 0 30px var(--purple-dim);
+        }
+
+        .hero-floating-cards {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .hero-floating-cards .float-card {
+            position: absolute;
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            animation: float 5s ease-in-out infinite;
+            box-shadow: var(--shadow);
+        }
+        .hero-floating-cards .float-card:nth-child(1) {
+            top: 0%;
+            right: -10%;
+            animation-delay: 0s;
+        }
+        .hero-floating-cards .float-card:nth-child(2) {
+            bottom: 10%;
+            left: -15%;
+            animation-delay: 1.5s;
+        }
+        .hero-floating-cards .float-card:nth-child(3) {
+            bottom: -5%;
+            right: 5%;
+            animation-delay: 3s;
+        }
+        .hero-floating-cards .float-card .fc-icon {
+            font-size: 1.2rem;
+        }
+        .hero-floating-cards .float-card .fc-icon.green {
+            color: var(--green);
+        }
+        .hero-floating-cards .float-card .fc-icon.gold {
+            color: var(--gold);
+        }
+        .hero-floating-cards .float-card .fc-icon.pink {
+            color: var(--pink);
+        }
+        .hero-floating-cards .float-card .fc-text {
+            color: var(--text-secondary);
+        }
+        .hero-floating-cards .float-card .fc-text strong {
+            color: #fff;
+        }
+
+        /* ===== COIN POWER SECTION ===== */
+        .power-section {
+            position: relative;
+            z-index: 2;
+            padding: 100px 0 80px;
+            background: linear-gradient(180deg, transparent, rgba(0, 240, 255, 0.02), transparent);
+        }
+
+        .power-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .power-content .power-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .power-list .power-item {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+        .power-list .power-item .icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            background: var(--cyan-dim);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--cyan);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+        }
+        .power-list .power-item .icon.gold {
+            background: var(--gold-dim);
+            color: var(--gold);
+            border-color: rgba(255, 215, 0, 0.1);
+        }
+        .power-list .power-item .icon.purple {
+            background: var(--purple-dim);
+            color: var(--purple);
+            border-color: rgba(123, 47, 252, 0.1);
+        }
+        .power-list .power-item .text h4 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .power-list .power-item .text p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .power-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .power-visual .graphic {
+            width: 100%;
+            max-width: 480px;
+            aspect-ratio: 1/1;
+            background: radial-gradient(circle at 30% 40%, rgba(0, 240, 255, 0.06), transparent 70%);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-glass);
+            padding: 40px;
+            text-align: center;
+        }
+        .power-visual .graphic .big-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), #f0a500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        .power-visual .graphic .label {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+        .power-visual .graphic .sub {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ===== LIVE GAMES PREVIEW ===== */
+        .games-section {
+            position: relative;
+            z-index: 2;
+            padding: 80px 0 100px;
+        }
+
+        .games-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .game-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 240, 255, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), var(--shadow-glow);
+        }
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-card .game-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 14px;
+            border-radius: 100px;
+            margin-bottom: 14px;
+        }
+        .game-card .game-status.live {
+            color: var(--green);
+            background: rgba(0, 255, 135, 0.12);
+            border: 1px solid rgba(0, 255, 135, 0.15);
+        }
+        .game-card .game-status.live .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse-glow 1.2s infinite;
+        }
+        .game-card .game-status.upcoming {
+            color: var(--gold);
+            background: var(--gold-dim);
+            border: 1px solid rgba(255, 215, 0, 0.12);
+        }
+        .game-card .game-status.ended {
+            color: var(--text-muted);
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+        }
+
+        .game-card .game-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .game-card .game-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .game-card .game-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-top: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-glass);
+            margin-bottom: 16px;
+        }
+        .game-card .game-meta .meta-item {
+            text-align: center;
+        }
+        .game-card .game-meta .meta-item .label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+        .game-card .game-meta .meta-item .value {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+        }
+        .game-card .game-meta .meta-item .value .coin {
+            color: var(--gold);
+            font-size: 0.7rem;
+        }
+
+        .game-card .game-actions .btn {
+            justify-content: center;
+            padding: 10px 16px;
+            font-size: 0.8rem;
+            width: 100%;
+        }
+
+        .game-card .game-players {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 12px;
+        }
+        .game-card .game-players .avatars {
+            display: flex;
+        }
+        .game-card .game-players .avatars span {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            border: 2px solid var(--bg-primary);
+            margin-right: -6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .game-card .game-players .avatars span:nth-child(2) {
+            background: linear-gradient(135deg, var(--gold), #f0a500);
+        }
+        .game-card .game-players .avatars span:nth-child(3) {
+            background: linear-gradient(135deg, var(--pink), #ff6b9d);
+        }
+        .game-card .game-players .avatars span:nth-child(4) {
+            background: linear-gradient(135deg, var(--purple), #a855f7);
+        }
+
+        /* ===== TESTIMONIALS / TRUST ===== */
+        .trust-section {
+            position: relative;
+            z-index: 2;
+            padding: 80px 0;
+            background: linear-gradient(180deg, transparent, rgba(123, 47, 252, 0.03), transparent);
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 48px;
+        }
+
+        .trust-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .trust-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 255, 0.08);
+        }
+        .trust-card .number {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: var(--cyan);
+        }
+        .trust-card .number.gold {
+            color: var(--gold);
+        }
+        .trust-card .number.pink {
+            color: var(--pink);
+        }
+        .trust-card .label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            position: relative;
+            z-index: 2;
+            padding: 80px 0 100px;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.06), rgba(123, 47, 252, 0.06));
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            padding: 60px 48px;
+            text-align: center;
+            backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(0, 240, 255, 0.03), transparent 60%);
+            pointer-events: none;
+        }
+        .cta-box h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.8rem, 3.5vw, 3rem);
+            font-weight: 900;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .cta-box h2 .highlight {
+            background: linear-gradient(135deg, var(--gold), #f0a500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .cta-box p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 32px;
+            position: relative;
+        }
+        .cta-box .cta-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid var(--border-glass);
+            padding: 48px 0 32px;
+            background: rgba(10, 11, 26, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-brand .brand {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, var(--cyan), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 280px;
+            line-height: 1.7;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 14px;
+            margin-top: 16px;
+        }
+        .footer-socials a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--text-secondary);
+        }
+        .footer-socials a:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            box-shadow: 0 0 30px var(--cyan-dim);
+            transform: translateY(-2px);
+        }
+
+        .footer-col h5 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        .footer-col ul li a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .footer-col ul li a:hover {
+            color: var(--cyan);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-glass);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .footer-bottom a {
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .footer-bottom a:hover {
+            color: var(--cyan);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-grid,
+            .power-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-desc,
+            .power-content .section-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-actions {
+                justify-content: center;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .hero-visual {
+                order: -1;
+            }
+            .hero-ring {
+                width: 320px;
+                height: 320px;
+            }
+            .hero-ring .ring-orb {
+                width: 140px;
+                height: 140px;
+                font-size: 3rem;
+            }
+            .hero-floating-cards .float-card {
+                display: none;
+            }
+            .power-list .power-item {
+                text-align: left;
+            }
+            .power-visual .graphic {
+                max-width: 320px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 11, 26, 0.96);
+                backdrop-filter: blur(24px);
+                padding: 24px;
+                gap: 16px;
+                border-bottom: 1px solid var(--border-glass);
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-toggle {
+                display: flex;
+            }
+            .nav-cta {
+                display: none;
+            }
+
+            .hero-ring {
+                width: 260px;
+                height: 260px;
+            }
+            .hero-ring .ring-orb {
+                width: 110px;
+                height: 110px;
+                font-size: 2.2rem;
+            }
+            .hero-ring .ring-orb .day-coin-label {
+                font-size: 0.6rem;
+                padding: 4px 12px;
+                bottom: -32px;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .trust-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .cta-box {
+                padding: 40px 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 16px;
+                align-items: center;
+            }
+            .hero-ring {
+                width: 220px;
+                height: 220px;
+            }
+            .hero-ring .ring-orb {
+                width: 90px;
+                height: 90px;
+                font-size: 1.8rem;
+            }
+            .nav-brand {
+                font-size: 1.1rem;
+            }
+            .nav-brand .brand-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+            .power-visual .graphic .big-number {
+                font-size: 3rem;
+            }
+        }
+
+        /* ===== ANIMATION HELPERS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 {
+            transition-delay: 0.1s;
+        }
+        .reveal-delay-2 {
+            transition-delay: 0.2s;
+        }
+        .reveal-delay-3 {
+            transition-delay: 0.3s;
+        }
+        .reveal-delay-4 {
+            transition-delay: 0.4s;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== PARTICLES BACKGROUND ===== -->
+    <canvas id="particles-canvas"></canvas>
+    <div class="noise-overlay"></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="nav-brand">
+                <span class="brand-icon"><i class="fas fa-coin"></i></span>
+                <span>DayCoin</span>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#games">Games</a></li>
+                <li><a href="#power">Why DAY</a></li>
+                <li><a href="#trust">Trust</a></li>
+                <li><a href="#cta" class="btn btn-gold" style="padding: 8px 24px; font-size: 0.8rem;" onclick="window.location.href='login.html'">Join Now</a></li>
+            </ul>
+
+            <a href="login.html" class="nav-cta"><i class="fas fa-rocket"></i> Get Started</a>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="dot"></span>
+                        Live Now • 12 Games Active
+                    </div>
+                    <h1 class="hero-title">
+                        Grow Your Wealth <br />
+                        <span class="gradient-text">Through Gaming</span>
+                    </h1>
+                    <p class="hero-desc">
+                        <strong>Day Coin</strong> is the future of gaming finance. Bet on live matches,
+                        win big, and build your portfolio — all in one platform.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="login.html" class="btn btn-gold">
+                            <i class="fas fa-coins"></i> Start Earning
+                        </a>
+                        <a href="#power" class="btn btn-secondary">
+                            <i class="fas fa-info-circle"></i> Learn More
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="number">$2.4M <span class="plus">+</span></div>
+                            <div class="label">Total Prize Pool</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="number">24.7K <span class="plus">+</span></div>
+                            <div class="label">Active Players</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="number">98.6%</div>
+                            <div class="label">Uptime</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="hero-ring">
+                        <div class="orbit"><span class="orbit-dot"></span></div>
+                        <div class="orbit"><span class="orbit-dot gold"></span></div>
+                        <div class="orbit"><span class="orbit-dot purple"></span></div>
+                        <div class="ring-orb">
+                            <i class="fas fa-coins"></i>
+                            <span class="day-coin-label">DAY COIN</span>
+                        </div>
+                    </div>
+                    <div class="hero-floating-cards">
+                        <div class="float-card">
+                            <span class="fc-icon green"><i class="fas fa-arrow-up"></i></span>
+                            <span class="fc-text"><strong>+24%</strong> this week</span>
+                        </div>
+                        <div class="float-card">
+                            <span class="fc-icon gold"><i class="fas fa-trophy"></i></span>
+                            <span class="fc-text"><strong>#1</strong> gaming coin</span>
+                        </div>
+                        <div class="float-card">
+                            <span class="fc-icon pink"><i class="fas fa-fire"></i></span>
+                            <span class="fc-text"><strong>1.2K</strong> bets placed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== POWER OF DAY COIN ===== -->
+    <section class="power-section" id="power">
+        <div class="container">
+            <div class="power-grid">
+                <div class="power-content">
+                    <span class="section-label"><i class="fas fa-bolt"></i> The Power of Day Coin</span>
+                    <h2 class="section-title">
+                        More Than a Currency — <br />
+                        <span class="highlight">Your Wealth Engine</span>
+                    </h2>
+                    <p class="section-subtitle">
+                        Day Coin isn't just for betting — it's a deflationary asset that grows in value
+                        with every match played. Join the revolution where gaming meets investing.
+                    </p>
+                    <div class="power-list">
+                        <div class="power-item">
+                            <div class="icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="text">
+                                <h4>Appreciating Asset</h4>
+                                <p>Every transaction burns a small % of DAY, reducing supply and increasing value over time.</p>
+                            </div>
+                        </div>
+                        <div class="power-item">
+                            <div class="icon gold"><i class="fas fa-trophy"></i></div>
+                            <div class="text">
+                                <h4>Earn While You Play</h4>
+                                <p>Win bets, earn DAY, and stake your coins to earn passive rewards — your skills pay off.</p>
+                            </div>
+                        </div>
+                        <div class="power-item">
+                            <div class="icon purple"><i class="fas fa-shield-halved"></i></div>
+                            <div class="text">
+                                <h4>Secure &amp; Transparent</h4>
+                                <p>Built on blockchain technology with provably fair mechanics. Your funds are always safe.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="power-visual">
+                    <div class="graphic">
+                        <div class="big-number">+184%</div>
+                        <div class="label">Year-to-Date Growth</div>
+                        <div class="sub">Outperforming traditional assets</div>
+                        <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center;">
+                            <span style="background: var(--cyan-dim); padding: 4px 14px; border-radius: 100px; font-size: 0.7rem; border:1px solid rgba(0,240,255,0.1);">🔥 Deflationary</span>
+                            <span style="background: var(--gold-dim); padding: 4px 14px; border-radius: 100px; font-size: 0.7rem; border:1px solid rgba(255,215,0,0.1);">💰 Staking Rewards</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== LIVE GAMES PREVIEW ===== -->
+    <section class="games-section" id="games">
+        <div class="container">
+            <div class="games-header">
+                <div>
+                    <span class="section-label"><i class="fas fa-circle" style="color: var(--green); font-size: 0.5rem; margin-right: 6px;"></i> Live Now</span>
+                    <h2 class="section-title">Featured <span class="highlight">Games</span></h2>
+                    <p class="section-subtitle">Watch, bet, and win — the action never stops.</p>
+                </div>
+                <a href="login.html" class="btn btn-secondary" style="padding: 10px 24px; font-size: 0.85rem;">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="games-grid" id="gamesGrid">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TRUST / SOCIAL PROOF ===== -->
+    <section class="trust-section" id="trust">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label"><i class="fas fa-heart"></i> Trusted by Thousands</span>
+                <h2 class="section-title">The <span class="highlight">Community</span> Speaks</h2>
+                <p class="section-subtitle mx-auto">Real numbers from real players who are growing their wealth with Day Coin.</p>
+            </div>
+
+            <div class="trust-grid">
+                <div class="trust-card reveal reveal-delay-1">
+                    <div class="number">$12.4M</div>
+                    <div class="label">Total Winnings Paid</div>
+                </div>
+                <div class="trust-card reveal reveal-delay-2">
+                    <div class="number gold">4.8★</div>
+                    <div class="label">Average User Rating</div>
+                </div>
+                <div class="trust-card reveal reveal-delay-3">
+                    <div class="number pink">27,000+</div>
+                    <div class="label">Active Community Members</div>
+                </div>
+                <div class="trust-card reveal reveal-delay-4">
+                    <div class="number">99.2%</div>
+                    <div class="label">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-section" id="cta">
+        <div class="container">
+            <div class="cta-box">
+                <h2>Ready to <span class="highlight">Grow Your Wealth</span>?</h2>
+                <p>Join thousands of players already earning with Day Coin. Sign up free and start your journey.</p>
+                <div class="cta-actions">
+                    <a href="login.html" class="btn btn-gold" style="padding: 16px 48px;">
+                        <i class="fas fa-rocket"></i> Get Started Now
+                    </a>
+                    <a href="#" class="btn btn-secondary" style="padding: 16px 48px;">
+                        <i class="fas fa-play-circle"></i> Watch Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span class="brand">DayCoin</span>
+                    <p>The next-gen gaming finance platform where every bet builds your future. Powered by DAY.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5>Platform</h5>
+                    <ul>
+                        <li><a href="login.html">Live Games</a></li>
+                        <li><a href="login.html">Leaderboard</a></li>
+                        <li><a href="login.html">Tournaments</a></li>
+                        <li><a href="login.html">Rewards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Company</h5>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Day Coin. All rights reserved.</span>
+                <span>
+                    <a href="#">Privacy</a> &bull;
+                    <a href="#">Terms</a> &bull;
+                    <a href="#">Cookies</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ================================================================
+        // 1. PARTICLES
+        // ================================================================
+        (function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, particles;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            const COUNT = 120;
+            particles = [];
+            for (let i = 0; i < COUNT; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 2 + 1,
+                    alpha: Math.random() * 0.5 + 0.1,
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                for (const p of particles) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0) p.x = w;
+                    if (p.x > w) p.x = 0;
+                    if (p.y < 0) p.y = h;
+                    if (p.y > h) p.y = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 240, 255, ${p.alpha})`;
+                    ctx.fill();
+                }
+
+                // connections
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(0, 240, 255, ${0.06 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ================================================================
+        // 2. NAVBAR
+        // ================================================================
+        const navbar = document.getElementById('navbar');
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+
+        // ================================================================
+        // 3. GAMES DATA & RENDER
+        // ================================================================
+        const games = [{
+            id: 1,
+            name: 'Cyber Racer',
+            desc: '8 players, last one standing wins the pot.',
+            status: 'live',
+            players: 142,
+            prize: '2,450',
+            odds: '3.2x',
+            icon: 'fa-car',
+        }, {
+            id: 2,
+            name: 'Battle Arena',
+            desc: 'Team deathmatch — pick your side and bet.',
+            status: 'live',
+            players: 89,
+            prize: '1,800',
+            odds: '2.8x',
+            icon: 'fa-crosshairs',
+        }, {
+            id: 3,
+            name: 'Crypto Royale',
+            desc: 'High-stakes poker with DAY buy-ins.',
+            status: 'upcoming',
+            players: 56,
+            prize: '3,200',
+            odds: '4.1x',
+            icon: 'fa-crown',
+        }, {
+            id: 4,
+            name: 'Neon Duel',
+            desc: '1v1 fighting game. Fast rounds, big wins.',
+            status: 'live',
+            players: 213,
+            prize: '1,100',
+            odds: '1.9x',
+            icon: 'fa-sword',
+        }, {
+            id: 5,
+            name: 'Rocket Rush',
+            desc: 'Predict the finish line in this chaotic race.',
+            status: 'ended',
+            players: 67,
+            prize: '950',
+            odds: '2.2x',
+            icon: 'fa-rocket',
+        }, {
+            id: 6,
+            name: 'Mystic Spin',
+            desc: 'Wheel of fortune — spin and multiply your DAY.',
+            status: 'live',
+            players: 178,
+            prize: '4,600',
+            odds: '5.0x',
+            icon: 'fa-dice',
+        }, ];
+
+        function renderGames() {
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = '';
+            games.forEach((g, idx) => {
+                const statusClass = g.status;
+                const statusLabel = g.status.charAt(0).toUpperCase() + g.status.slice(1);
+                const card = document.createElement('div');
+                card.className = 'game-card reveal';
+                card.style.transitionDelay = (idx * 0.07) + 's';
+                card.innerHTML = `
+              <div class="game-status ${statusClass}">
+                ${g.status === 'live' ? '<span class="dot"></span>' : ''}
+                ${statusLabel}
+              </div>
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;">
+                <i class="fas ${g.icon}" style="font-size:1.8rem; color:var(--cyan); opacity:0.6;"></i>
+                <h3 class="game-name">${g.name}</h3>
+              </div>
+              <p class="game-desc">${g.desc}</p>
+              <div class="game-meta">
+                <div class="meta-item">
+                  <div class="label">Players</div>
+                  <div class="value">${g.players}</div>
+                </div>
+                <div class="meta-item">
+                  <div class="label">Prize</div>
+                  <div class="value">${g.prize} <span class="coin">DAY</span></div>
+                </div>
+                <div class="meta-item">
+                  <div class="label">Odds</div>
+                  <div class="value">${g.odds}</div>
+                </div>
+              </div>
+              <div class="game-actions">
+                <a href="login.html" class="btn btn-primary" ${g.status === 'ended' ? 'style="opacity:0.4;pointer-events:none;"' : ''}>
+                  <i class="fas fa-coins"></i> Bet Now
+                </a>
+              </div>
+              <div class="game-players">
+                <span>${g.players} players • </span>
+                <div class="avatars">
+                  <span>JD</span>
+                  <span>MK</span>
+                  <span>TR</span>
+                  <span>+${Math.floor(g.players / 10)}</span>
+                </div>
+              </div>
+            `;
+                grid.appendChild(card);
+
+                // Add click handler for Bet Now button
+                const betBtn = card.querySelector('.btn-primary');
+                if (betBtn && g.status !== 'ended') {
+                    betBtn.addEventListener('click', function(e) {
+                        // If it's an anchor, prevent default and show message
+                        if (this.tagName === 'A') {
+                            e.preventDefault();
+                            // Show a quick message before redirecting
+                            showToast('🎮 Redirecting to login to place your bet...', 'info');
+                            setTimeout(() => {
+                                window.location.href = 'login.html';
+                            }, 800);
+                        }
+                    });
+                }
+            });
+        }
+        renderGames();
+
+        // ================================================================
+        // 4. SCROLL REVEAL
+        // ================================================================
+        const revealElements = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        revealElements.forEach(el => observer.observe(el));
+
+        // ================================================================
+        // 5. TOAST SYSTEM (for redirect messages)
+        // ================================================================
+        function showToast(message, type = 'info') {
+            // Create toast if it doesn't exist
+            let toast = document.getElementById('toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(100px);
+                    z-index: 9999;
+                    padding: 16px 28px;
+                    border-radius: var(--radius-sm);
+                    background: var(--bg-card);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid var(--border-glass);
+                    box-shadow: var(--shadow);
+                    color: #fff;
+                    font-size: 0.95rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    opacity: 0;
+                    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                    min-width: 280px;
+                    max-width: 500px;
+                    justify-content: center;
+                `;
+                document.body.appendChild(toast);
+            }
+
+            const icons = {
+                success: '✅',
+                error: '❌',
+                info: 'ℹ️',
+            };
+
+            toast.innerHTML = `${icons[type] || 'ℹ️'} ${message}`;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+            }, 3000);
+        }
+
+        // ================================================================
+        // 6. GAME STATUS ROTATION (demo)
+        // ================================================================
+        setInterval(() => {
+            const statuses = document.querySelectorAll('.game-card .game-status');
+            if (statuses.length > 0) {
+                const idx = Math.floor(Math.random() * statuses.length);
+                const el = statuses[idx];
+                const states = ['live', 'upcoming', 'ended'];
+                const current = el.classList.contains('live') ? 'live' :
+                    el.classList.contains('upcoming') ? 'upcoming' : 'ended';
+                let next = states[Math.floor(Math.random() * states.length)];
+                while (next === current) {
+                    next = states[Math.floor(Math.random() * states.length)];
+                }
+                el.className = 'game-status ' + next;
+                el.innerHTML = (next === 'live' ? '<span class="dot"></span>' : '') +
+                    next.charAt(0).toUpperCase() + next.slice(1);
+
+                const card = el.closest('.game-card');
+                const betBtn = card.querySelector('.btn-primary');
+                if (betBtn) {
+                    if (next === 'ended') {
+                        betBtn.style.opacity = '0.4';
+                        betBtn.style.pointerEvents = 'none';
+                    } else {
+                        betBtn.style.opacity = '1';
+                        betBtn.style.pointerEvents = 'auto';
+                    }
+                }
+            }
+        }, 30000);
+
+        // ================================================================
+        // 7. REDIRECT LOGIC FOR ALL CTA BUTTONS
+        // ================================================================
+        document.querySelectorAll('.btn-gold, .nav-cta, .btn-primary, .btn-secondary').forEach(btn => {
+            if (btn.href && btn.href.includes('login.html')) {
+                btn.addEventListener('click', function(e) {
+                    // If it's a game card button, we already handle it above
+                    if (this.closest('.game-card')) return;
+                    
+                    // For other buttons, just let the href work
+                    // But we can add a tracking message
+                    if (this.classList.contains('btn-gold') || this.classList.contains('nav-cta')) {
+                        e.preventDefault();
+                        showToast('🚀 Redirecting to get started...', 'info');
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 600);
+                    }
+                });
+            }
+        });
+
+        console.log('🚀 Day Coin — Phase 1 Index loaded.');
+        console.log('💎 Grow your wealth through gaming!');
+        console.log('🔗 All CTAs redirect to login.html');
+    </script>
+</body>
+</html>
