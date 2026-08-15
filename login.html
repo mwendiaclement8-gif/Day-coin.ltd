@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day Coin — Login / Register</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg-primary: #0a0b1a;
+            --bg-secondary: #111328;
+            --bg-card: rgba(17, 19, 40, 0.85);
+            --bg-glass: rgba(255, 255, 255, 0.04);
+            --border-glass: rgba(255, 255, 255, 0.08);
+
+            --cyan: #00f0ff;
+            --cyan-dim: rgba(0, 240, 255, 0.15);
+            --gold: #ffd700;
+            --gold-dim: rgba(255, 215, 0, 0.15);
+            --purple: #7b2ffc;
+            --purple-dim: rgba(123, 47, 252, 0.20);
+            --pink: #ff2d95;
+            --green: #00ff87;
+            --red: #ff4757;
+
+            --text-primary: #f0f4ff;
+            --text-secondary: rgba(240, 244, 255, 0.7);
+            --text-muted: rgba(240, 244, 255, 0.4);
+
+            --radius: 20px;
+            --radius-sm: 12px;
+            --shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 60px rgba(0, 240, 255, 0.08);
+
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--cyan);
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--cyan-dim);
+        }
+
+        /* ===== BACKGROUND PARTICLES ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 300px 300px;
+        }
+
+        /* ===== AUTH CONTAINER ===== */
+        .auth-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            padding: 40px 36px;
+            box-shadow: var(--shadow), var(--shadow-glow);
+            animation: slide-up 0.6s ease forwards;
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                box-shadow: 0 0 30px var(--cyan-dim);
+            }
+            50% {
+                box-shadow: 0 0 60px var(--cyan-dim), 0 0 90px rgba(0, 240, 255, 0.05);
+            }
+        }
+
+        /* ===== AUTH HEADER ===== */
+        .auth-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .auth-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 1.6rem;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .auth-brand .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #fff;
+            box-shadow: 0 0 30px var(--cyan-dim);
+        }
+        .auth-brand span {
+            background: linear-gradient(135deg, var(--cyan), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-glass);
+            padding: 4px;
+            border-radius: 100px;
+            border: 1px solid var(--border-glass);
+            margin-top: 16px;
+        }
+        .auth-tab {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .auth-tab.active {
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            color: #fff;
+            box-shadow: 0 0 30px var(--cyan-dim);
+        }
+        .auth-tab:hover:not(.active) {
+            color: #fff;
+        }
+
+        .auth-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        /* ===== FORM CONTAINERS ===== */
+        .form-container {
+            display: none;
+            animation: fade-in 0.3s ease;
+        }
+        .form-container.active {
+            display: block;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .form-group label .required {
+            color: var(--pink);
+            font-size: 1rem;
+        }
+
+        .form-group .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+        .form-group .input-wrapper:focus-within {
+            border-color: var(--cyan);
+            box-shadow: 0 0 30px var(--cyan-dim);
+        }
+        .form-group .input-wrapper .input-icon {
+            padding: 0 14px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+        .form-group .input-wrapper input,
+        .form-group .input-wrapper select {
+            width: 100%;
+            padding: 14px 14px 14px 0;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-group .input-wrapper input::placeholder {
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        .form-group .input-wrapper .toggle-password {
+            padding: 0 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .form-group .input-wrapper .toggle-password:hover {
+            color: var(--cyan);
+        }
+
+        .form-group .file-upload {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-glass);
+            border: 1px dashed var(--border-glass);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .form-group .file-upload:hover {
+            border-color: var(--cyan-dim);
+            background: rgba(0, 240, 255, 0.03);
+        }
+        .form-group .file-upload .file-icon {
+            font-size: 1.4rem;
+            color: var(--cyan);
+        }
+        .form-group .file-upload .file-text {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .form-group .file-upload .file-text strong {
+            color: var(--cyan);
+        }
+        .form-group .file-upload input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .form-group .file-upload .file-name {
+            font-size: 0.8rem;
+            color: var(--gold);
+            margin-left: auto;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        .name-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 4px 0 2px;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-glass);
+        }
+        .divider span {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        /* ===== GMAIL BUTTON ===== */
+        .btn-gmail {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-gmail:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .btn-gmail i {
+            font-size: 1.4rem;
+            color: #ea4335;
+        }
+        .btn-gmail span {
+            color: var(--text-secondary);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            width: 100%;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            color: #fff;
+            box-shadow: 0 0 40px var(--cyan-dim);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 0 60px var(--cyan-dim), 0 0 80px rgba(123, 47, 252, 0.15);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), #f0a500);
+            color: #0a0b1a;
+            font-weight: 700;
+            box-shadow: 0 0 40px var(--gold-dim);
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 0 60px var(--gold-dim), 0 0 80px rgba(255, 215, 0, 0.1);
+        }
+
+        /* ===== AUTH FOOTER ===== */
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .auth-footer a {
+            color: var(--cyan);
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .auth-footer a:hover {
+            color: var(--gold);
+            text-shadow: 0 0 30px var(--gold-dim);
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            transition: var(--transition);
+            margin-top: 16px;
+            justify-content: center;
+        }
+        .back-home:hover {
+            color: var(--cyan);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            padding: 16px 24px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow);
+            color: #fff;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            min-width: 280px;
+            max-width: 420px;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast .toast-icon {
+            font-size: 1.4rem;
+        }
+        .toast .toast-icon.success {
+            color: var(--green);
+        }
+        .toast .toast-icon.error {
+            color: var(--red);
+        }
+        .toast .toast-icon.info {
+            color: var(--cyan);
+        }
+        .toast .toast-close {
+            margin-left: auto;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+        }
+        .toast .toast-close:hover {
+            color: #fff;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 520px) {
+            .auth-card {
+                padding: 28px 20px;
+            }
+            .name-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .auth-brand {
+                font-size: 1.2rem;
+            }
+            .auth-brand .brand-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            .auth-tab {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+            .toast {
+                right: 12px;
+                left: 12px;
+                min-width: unset;
+                font-size: 0.85rem;
+                padding: 14px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== PARTICLES BACKGROUND ===== -->
+    <canvas id="particles-canvas"></canvas>
+    <div class="noise-overlay"></div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <span class="toast-icon" id="toastIcon"><i class="fas fa-check-circle"></i></span>
+        <span id="toastMessage">Success!</span>
+        <button class="toast-close" id="toastClose">&times;</button>
+    </div>
+
+    <!-- ===== AUTH WRAPPER ===== -->
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Header -->
+            <div class="auth-header">
+                <a href="index.html" class="auth-brand">
+                    <span class="brand-icon"><i class="fas fa-coin"></i></span>
+                    <span>DayCoin</span>
+                </a>
+                <!-- Tabs -->
+                <div class="auth-tabs" id="authTabs">
+                    <button class="auth-tab active" data-form="login">Login</button>
+                    <button class="auth-tab" data-form="register">Register</button>
+                </div>
+                <p id="formSubtitle">Login to your account and start winning</p>
+            </div>
+
+            <!-- ===== LOGIN FORM ===== -->
+            <div class="form-container active" id="loginFormContainer">
+                <form class="auth-form" id="loginForm" novalidate>
+                    <div class="form-group">
+                        <label for="loginUsername"><i class="fas fa-user"></i> Username <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon"><i class="fas fa-user"></i></span>
+                            <input type="text" id="loginUsername" placeholder="Enter your username" required autocomplete="username" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword"><i class="fas fa-lock"></i> Password <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon"><i class="fas fa-lock"></i></span>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password" />
+                            <span class="toggle-password" data-target="loginPassword"><i class="fas fa-eye"></i></span>
+                        </div>
+                    </div>
+                    <div style="text-align: right; margin-top: -8px;">
+                        <a href="#" id="forgotPassword" style="color: var(--text-muted); font-size: 0.8rem; transition: var(--transition);" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-muted)'">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-gold" id="loginBtn">
+                        <i class="fas fa-arrow-right"></i> Login
+                    </button>
+                    <div class="divider"><span>or continue with</span></div>
+                    <button type="button" class="btn-gmail" id="gmailLogin">
+                        <i class="fab fa-google"></i>
+                        <span>Sign in with Google</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ===== REGISTER FORM ===== -->
+            <div class="form-container" id="registerFormContainer">
+                <form class="auth-form" id="registerForm" novalidate>
+                    <div class="name-row">
+                        <div class="form-group">
+                            <label for="regFirstName">First Name <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                <input type="text" id="regFirstName" placeholder="First" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="regLastName">Last Name <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                <input type="text" id="regLastName" placeholder="Last" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPhone"><i class="fas fa-phone"></i> Phone Number <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon"><i class="fas fa-phone"></i></span>
+                            <input type="tel" id="regPhone" placeholder="+1234567890" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEmail"><i class="fas fa-envelope"></i> Email <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                            <input type="email" id="regEmail" placeholder="you@example.com" required autocomplete="email" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-id-card"></i> ID Upload <span class="required">*</span></label>
+                        <div class="file-upload" id="idUpload">
+                            <span class="file-icon"><i class="fas fa-cloud-upload-alt"></i></span>
+                            <span class="file-text">Upload <strong>Passport</strong> / <strong>Driving Licence</strong> / <strong>ID Card</strong></span>
+                            <input type="file" id="idFile" accept="image/*,.pdf" required />
+                            <span class="file-name" id="fileName">No file chosen</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regUsername"><i class="fas fa-user-tag"></i> Username <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon"><i class="fas fa-user-tag"></i></span>
+                            <input type="text" id="regUsername" placeholder="Choose a unique username" required autocomplete="username" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword"><i class="fas fa-lock"></i> Password <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon"><i class="fas fa-lock"></i></span>
+                            <input type="password" id="regPassword" placeholder="Min 6 characters" required minlength="6" autocomplete="new-password" />
+                            <span class="toggle-password" data-target="regPassword"><i class="fas fa-eye"></i></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="registerBtn">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+
+                    <div class="divider"><span>or continue with</span></div>
+                    <button type="button" class="btn-gmail" id="gmailRegister">
+                        <i class="fab fa-google"></i>
+                        <span>Sign up with Google</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Footer (dynamic) -->
+            <div class="auth-footer" id="authFooter">
+                <span id="footerText">Don't have an account?</span>
+                <a id="footerLink" data-switch="register">Register now</a>
+            </div>
+
+            <!-- Back to Home -->
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== FIREBASE AUTHENTICATION ===== -->
+    <!-- ============================================================ -->
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ================================================================
+        // 🔥 FIREBASE CONFIGURATION
+        // ================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyA869-TweVLbfVqw5kpoQT_ifGIr-TTSfQ",
+            authDomain: "my-day-65219.firebaseapp.com",
+            projectId: "my-day-65219",
+            storageBucket: "my-day-65219.firebasestorage.app",
+            messagingSenderId: "686930969383",
+            appId: "1:686930969383:web:8fb39f48fae49be56c5f02",
+            measurementId: "G-0VP3PF44BQ"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        console.log('🔥 Firebase initialized!');
+
+        // ================================================================
+        // 1. PARTICLES BACKGROUND
+        // ================================================================
+        (function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, particles;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            const COUNT = 100;
+            particles = [];
+            for (let i = 0; i < COUNT; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 2 + 1,
+                    alpha: Math.random() * 0.5 + 0.1,
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                for (const p of particles) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0) p.x = w;
+                    if (p.x > w) p.x = 0;
+                    if (p.y < 0) p.y = h;
+                    if (p.y > h) p.y = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 240, 255, ${p.alpha})`;
+                    ctx.fill();
+                }
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(0, 240, 255, ${0.06 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ================================================================
+        // 2. TOAST SYSTEM
+        // ================================================================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+
+            const icons = {
+                success: '<i class="fas fa-check-circle"></i>',
+                error: '<i class="fas fa-exclamation-circle"></i>',
+                info: '<i class="fas fa-info-circle"></i>',
+            };
+            icon.className = 'toast-icon ' + type;
+            icon.innerHTML = icons[type] || icons.info;
+            msg.textContent = message;
+
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        }
+
+        document.getElementById('toastClose').addEventListener('click', () => {
+            document.getElementById('toast').classList.remove('show');
+        });
+
+        // ================================================================
+        // 3. TOGGLE PASSWORD VISIBILITY
+        // ================================================================
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.className = 'fas fa-eye-slash';
+                } else {
+                    input.type = 'password';
+                    icon.className = 'fas fa-eye';
+                }
+            });
+        });
+
+        // ================================================================
+        // 4. FILE UPLOAD HANDLER
+        // ================================================================
+        document.getElementById('idFile').addEventListener('change', function(e) {
+            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            document.getElementById('fileName').textContent = fileName;
+        });
+
+        // ================================================================
+        // 5. TAB SWITCHING
+        // ================================================================
+        const tabs = document.querySelectorAll('.auth-tab');
+        const loginContainer = document.getElementById('loginFormContainer');
+        const registerContainer = document.getElementById('registerFormContainer');
+        const footerText = document.getElementById('footerText');
+        const footerLink = document.getElementById('footerLink');
+        const formSubtitle = document.getElementById('formSubtitle');
+
+        function switchForm(form) {
+            tabs.forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.form === form);
+            });
+
+            loginContainer.classList.toggle('active', form === 'login');
+            registerContainer.classList.toggle('active', form === 'register');
+
+            if (form === 'login') {
+                footerText.textContent = "Don't have an account?";
+                footerLink.textContent = 'Register now';
+                footerLink.dataset.switch = 'register';
+                formSubtitle.textContent = 'Login to your account and start winning';
+            } else {
+                footerText.textContent = 'Already have an account?';
+                footerLink.textContent = 'Login here';
+                footerLink.dataset.switch = 'login';
+                formSubtitle.textContent = 'Create your account and start your journey';
+            }
+
+            document.querySelectorAll('.form-group .input-wrapper').forEach(w => w.style.borderColor = '');
+        }
+
+        window.switchForm = switchForm;
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                switchForm(this.dataset.form);
+            });
+        });
+
+        footerLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            switchForm(this.dataset.switch);
+        });
+
+        // ================================================================
+        // 6. FORGOT PASSWORD
+        // ================================================================
+        document.getElementById('forgotPassword').addEventListener('click', async function(e) {
+            e.preventDefault();
+            const email = prompt('Enter your email address to reset your password:');
+            if (email) {
+                try {
+                    await auth.sendPasswordResetEmail(email);
+                    showToast('📧 Password reset email sent! Check your inbox.', 'success');
+                } catch (error) {
+                    showToast(error.message, 'error');
+                }
+            }
+        });
+
+        // ================================================================
+        // 7. REGISTRATION - AUTO APPROVED!
+        // ================================================================
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('regFirstName').value.trim();
+            const lastName = document.getElementById('regLastName').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const fileInput = document.getElementById('idFile');
+
+            // Validate
+            if (!firstName || !lastName || !phone || !email || !username || !password) {
+                showToast('Please fill in all required fields.', 'error');
+                return;
+            }
+
+            if (username.length < 3) {
+                showToast('Username must be at least 3 characters.', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showToast('Password must be at least 6 characters.', 'error');
+                return;
+            }
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showToast('Please upload a valid ID document.', 'error');
+                return;
+            }
+
+            // Check if username already exists
+            try {
+                const usernameCheck = await db.collection('users')
+                    .where('username', '==', username)
+                    .get();
+
+                if (!usernameCheck.empty) {
+                    showToast('Username already taken. Please choose another.', 'error');
+                    return;
+                }
+            } catch (error) {
+                console.error('Username check error:', error);
+            }
+
+            try {
+                // Show loading state
+                const btn = document.getElementById('registerBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+
+                // 1. Create user in Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // 2. Save user data to Firestore - AUTO APPROVED!
+                await db.collection('users').doc(user.uid).set({
+                    firstName: firstName,
+                    lastName: lastName,
+                    phone: phone,
+                    email: email,
+                    username: username,
+                    walletBalance: 0,
+                    status: 'approved', // ✅ AUTO APPROVED!
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    uid: user.uid
+                });
+
+                // 3. Create wallet document
+                await db.collection('wallets').doc(user.uid).set({
+                    balance: 0,
+                    transactions: [],
+                    status: 'Normal',
+                    userId: user.uid,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showToast('🎉 Account created! Redirecting to dashboard...', 'success');
+                
+                // Reset button
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+
+                // Store user data in session
+                sessionStorage.setItem('userData', JSON.stringify({
+                    uid: user.uid,
+                    username: username,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email
+                }));
+
+                // Redirect to dashboard immediately!
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                showToast(error.message, 'error');
+                document.getElementById('registerBtn').disabled = false;
+                document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+            }
+        });
+
+        // ================================================================
+        // 8. LOGIN - NO VERIFICATION NEEDED!
+        // ================================================================
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!username || !password) {
+                showToast('Please fill in all fields.', 'error');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const btn = document.getElementById('loginBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+
+                // Find user by username to get email
+                const usersRef = db.collection('users');
+                const snapshot = await usersRef.where('username', '==', username).get();
+
+                if (snapshot.empty) {
+                    showToast('User not found. Please check your username.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-arrow-right"></i> Login';
+                    return;
+                }
+
+                const userDoc = snapshot.docs[0];
+                const userData = userDoc.data();
+                const email = userData.email;
+
+                // Sign in with email and password
+                await auth.signInWithEmailAndPassword(email, password);
+
+                showToast('✅ Login successful! Redirecting...', 'success');
+
+                // Store user data in session
+                sessionStorage.setItem('userData', JSON.stringify({
+                    uid: userDoc.id,
+                    username: userData.username,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    email: userData.email
+                }));
+
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast(error.message, 'error');
+                document.getElementById('loginBtn').disabled = false;
+                document.getElementById('loginBtn').innerHTML = '<i class="fas fa-arrow-right"></i> Login';
+            }
+        });
+
+        // ================================================================
+        // 9. GOOGLE SIGN-IN - AUTO APPROVED!
+        // ================================================================
+        async function handleGoogleSignIn(isRegister = false) {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+
+                // Check if user exists in Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+
+                if (!userDoc.exists) {
+                    // Create new user profile - AUTO APPROVED!
+                    const username = user.displayName?.toLowerCase().replace(/\s/g, '') || 'google_user_' + Math.random().toString(36).substring(2, 6);
+                    
+                    await db.collection('users').doc(user.uid).set({
+                        firstName: user.displayName?.split(' ')[0] || 'Google',
+                        lastName: user.displayName?.split(' ')[1] || 'User',
+                        phone: user.phoneNumber || '',
+                        email: user.email,
+                        username: username,
+                        walletBalance: 0,
+                        status: 'approved', // ✅ AUTO APPROVED!
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        uid: user.uid
+                    });
+
+                    await db.collection('wallets').doc(user.uid).set({
+                        balance: 0,
+                        transactions: [],
+                        status: 'Normal',
+                        userId: user.uid,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    showToast('🎉 Google account linked! Redirecting...', 'success');
+                }
+
+                const data = userDoc.exists ? userDoc.data() : null;
+                
+                showToast('✅ Welcome back!', 'success');
+                sessionStorage.setItem('userData', JSON.stringify({
+                    uid: user.uid,
+                    username: data?.username || 'google_user',
+                    firstName: data?.firstName || 'Google',
+                    lastName: data?.lastName || 'User',
+                    email: data?.email || user.email
+                }));
+
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        document.getElementById('gmailLogin').addEventListener('click', function() {
+            handleGoogleSignIn(false);
+        });
+
+        document.getElementById('gmailRegister').addEventListener('click', function() {
+            handleGoogleSignIn(true);
+        });
+
+        // ================================================================
+        // 10. AUTH STATE LISTENER
+        // ================================================================
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                console.log('✅ User is signed in:', user.uid);
+                
+                // If on login page and already logged in, redirect to dashboard
+                if (window.location.pathname.includes('login.html') || window.location.pathname.includes('register.html')) {
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        if (userDoc.exists) {
+                            const data = userDoc.data();
+                            if (data.status === 'approved') {
+                                window.location.href = 'dashboard.html';
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error checking user status:', error);
+                    }
+                }
+            } else {
+                console.log('👋 User is signed out');
+            }
+        });
+
+        // ================================================================
+        // 11. KEYBOARD SHORTCUT: Enter submits active form
+        // ================================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const activeForm = document.querySelector('.form-container.active form');
+                if (activeForm && document.activeElement && activeForm.contains(document.activeElement)) {
+                    activeForm.dispatchEvent(new Event('submit'));
+                }
+            }
+        });
+
+        console.log('🔐 Day Coin — Firebase Authentication ready!');
+        console.log('✅ Users are AUTO-APPROVED on registration!');
+    </script>
+</body>
+</html>
