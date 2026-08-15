@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day Coin — Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0b1a;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .brand {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #00f0ff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00f0ff, #7b2ffc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #00f0ff, #7b2ffc);
+            color: #fff;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #ffd700, #f0a500);
+            color: #000;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ff4757, #cc1133);
+            color: #fff;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 15px;
+            padding: 24px;
+        }
+        .card-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-title i { color: #00f0ff; }
+        .wallet-balance {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ffd700, #f0a500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .wallet-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        .stat { color: rgba(255,255,255,0.6); font-size: 0.8rem; }
+        .profile-field {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .profile-field .label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+        .profile-field .value { font-weight: 500; }
+        .game-item {
+            background: rgba(255,255,255,0.03);
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .game-status {
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .game-status.live { background: rgba(0,255,135,0.15); color: #00ff87; }
+        .game-status.upcoming { background: rgba(255,215,0,0.15); color: #ffd700; }
+        .game-status.ended { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); }
+        .loading { text-align: center; padding: 40px; color: rgba(255,255,255,0.5); }
+        .loading i { font-size: 2rem; margin-bottom: 10px; color: #00f0ff; }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            padding: 16px 24px;
+            background: rgba(17, 19, 40, 0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; align-items: stretch; }
+            .user-info { justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand"><i class="fas fa-coin" style="color:#00f0ff; -webkit-text-fill-color:#00f0ff;"></i> DayCoin</div>
+            <div class="user-info">
+                <span class="user-avatar" id="userAvatar">JD</span>
+                <span id="userName">Loading...</span>
+                <button class="btn btn-outline" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <a href="admin.html" class="btn btn-primary" id="adminBtn" style="display:none;"><i class="fas fa-shield-alt"></i> Admin</a>
+            </div>
+        </div>
+
+        <!-- LOADING -->
+        <div id="loadingState" class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading your dashboard...</p>
+        </div>
+
+        <!-- DASHBOARD CONTENT -->
+        <div id="dashboardContent" style="display:none;">
+            <div class="grid">
+                <!-- Profile -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-user"></i> My Profile</div>
+                    <div id="profileFields">
+                        <div class="profile-field"><span class="label">Name</span><span class="value" id="displayName">-</span></div>
+                        <div class="profile-field"><span class="label">Email</span><span class="value" id="displayEmail">-</span></div>
+                        <div class="profile-field"><span class="label">Username</span><span class="value" id="displayUsername">-</span></div>
+                        <div class="profile-field"><span class="label">Status</span><span class="value" id="displayStatus">-</span></div>
+                    </div>
+                </div>
+
+                <!-- Wallet -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-wallet"></i> Wallet</div>
+                    <div class="wallet-balance" id="walletBalance">0</div>
+                    <div class="stat">DAY Coins</div>
+                    <div class="wallet-actions">
+                        <button class="btn btn-gold" id="depositBtn"><i class="fas fa-arrow-down"></i> Deposit</button>
+                        <button class="btn btn-danger" id="withdrawBtn"><i class="fas fa-arrow-up"></i> Withdraw</button>
+                    </div>
+                    <div style="margin-top:15px; font-size:0.8rem; color:rgba(255,255,255,0.4);">
+                        <i class="fas fa-history"></i> Last transaction: <span id="lastTransaction">None</span>
+                    </div>
+                </div>
+
+                <!-- Games -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-gamepad"></i> Available Games</div>
+                    <div id="gamesList">
+                        <div style="color:rgba(255,255,255,0.4); text-align:center; padding:20px;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading games...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <a href="admin.html" class="btn btn-primary" style="text-align:center; width:100%;">
+                            <i class="fas fa-shield-alt"></i> Admin Panel
+                        </a>
+                        <a href="index.html" class="btn btn-outline" style="text-align:center; width:100%;">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-top:30px; font-size:0.75rem; color:rgba(255,255,255,0.3); border-top:1px solid rgba(255,255,255,0.05); padding-top:20px;">
+            &copy; 2026 Day Coin. All rights reserved.
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ================================================================
+        // 🔥 FIREBASE CONFIGURATION
+        // ================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyA869-TweVLbfVqw5kpoQT_ifGIr-TTSfQ",
+            authDomain: "my-day-65219.firebaseapp.com",
+            projectId: "my-day-65219",
+            storageBucket: "my-day-65219.firebasestorage.app",
+            messagingSenderId: "686930969383",
+            appId: "1:686930969383:web:8fb39f48fae49be56c5f02",
+            measurementId: "G-0VP3PF44BQ"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ✅ FIX: No offline persistence to avoid "offline" notifications
+        console.log('🔥 Dashboard Firebase initialized!');
+
+        // ================================================================
+        // CHECK AUTH & LOAD DATA
+        // ================================================================
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                console.log('No user, redirecting to login...');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            console.log('User signed in:', user.uid);
+            await loadUserData(user.uid);
+        });
+
+        async function loadUserData(userId) {
+            try {
+                document.getElementById('loadingState').style.display = 'block';
+                document.getElementById('dashboardContent').style.display = 'none';
+
+                const userDoc = await db.collection('users').doc(userId).get();
+                if (!userDoc.exists) {
+                    await auth.signOut();
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const userData = userDoc.data();
+
+                // Update UI
+                document.getElementById('userName').textContent = `${userData.firstName || ''} ${userData.lastName || ''}`;
+                document.getElementById('userAvatar').textContent = (userData.firstName || 'U').charAt(0);
+                document.getElementById('displayName').textContent = `${userData.firstName || ''} ${userData.lastName || ''}`;
+                document.getElementById('displayEmail').textContent = userData.email || '-';
+                document.getElementById('displayUsername').textContent = userData.username || '-';
+                document.getElementById('displayStatus').textContent = userData.status || 'approved';
+
+                // Check if admin
+                try {
+                    const adminDoc = await db.collection('admins').doc(userId).get();
+                    if (adminDoc.exists) {
+                        document.getElementById('adminBtn').style.display = 'inline-block';
+                    }
+                } catch (e) {}
+
+                await loadWallet(userId);
+                await loadGames();
+
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+
+                console.log('✅ Dashboard loaded for:', userData.username);
+
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                document.getElementById('loadingState').innerHTML = `
+                    <i class="fas fa-exclamation-circle" style="color:#ff4757;"></i>
+                    <p style="color:#ff4757;">Error loading dashboard: ${error.message}</p>
+                    <button class="btn btn-primary" onclick="location.reload()">Try Again</button>
+                `;
+            }
+        }
+
+        // ================================================================
+        // LOAD WALLET
+        // ================================================================
+        async function loadWallet(userId) {
+            try {
+                const walletDoc = await db.collection('wallets').doc(userId).get();
+                if (walletDoc.exists) {
+                    const data = walletDoc.data();
+                    document.getElementById('walletBalance').textContent = (data.balance || 0).toLocaleString();
+                } else {
+                    await db.collection('wallets').doc(userId).set({
+                        balance: 0,
+                        transactions: [],
+                        status: 'Normal',
+                        userId: userId,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    document.getElementById('walletBalance').textContent = '0';
+                }
+
+                const txns = await db.collection('transactions')
+                    .where('userId', '==', userId)
+                    .orderBy('timestamp', 'desc')
+                    .limit(1)
+                    .get();
+
+                if (!txns.empty) {
+                    const txn = txns.docs[0].data();
+                    const date = txn.timestamp ? new Date(txn.timestamp.toDate()).toLocaleDateString() : 'N/A';
+                    document.getElementById('lastTransaction').textContent = `${txn.type || 'Transaction'} - ${date}`;
+                }
+
+            } catch (error) {
+                console.error('Error loading wallet:', error);
+            }
+        }
+
+        // ================================================================
+        // LOAD GAMES
+        // ================================================================
+        async function loadGames() {
+            try {
+                const snapshot = await db.collection('games')
+                    .where('status', 'in', ['live', 'upcoming'])
+                    .orderBy('createdAt', 'desc')
+                    .limit(6)
+                    .get();
+
+                const container = document.getElementById('gamesList');
+
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:20px; color:rgba(255,255,255,0.4);">
+                            <i class="fas fa-gamepad" style="font-size:2rem; opacity:0.3;"></i>
+                            <p>No games available yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const game = doc.data();
+                    const div = document.createElement('div');
+                    div.className = 'game-item';
+                    div.innerHTML = `
+                        <div>
+                            <strong>${game.name || 'Untitled'}</strong>
+                            <div style="font-size:0.75rem; color:rgba(255,255,255,0.5);">
+                                ${game.players || 0} players • ${game.prize || 0} DAY
+                            </div>
+                        </div>
+                        <span class="game-status ${game.status || 'upcoming'}">${game.status || 'upcoming'}</span>
+                    `;
+                    container.appendChild(div);
+                });
+
+            } catch (error) {
+                console.error('Error loading games:', error);
+                document.getElementById('gamesList').innerHTML = `
+                    <div style="text-align:center; color:#ff4757; padding:10px;">
+                        Error loading games
+                    </div>
+                `;
+            }
+        }
+
+        // ================================================================
+        // LOGOUT
+        // ================================================================
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            try {
+                await auth.signOut();
+                sessionStorage.clear();
+                showNotification('👋 Logged out successfully!', 'info');
+                setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+            } catch (error) {
+                showNotification('Error logging out: ' + error.message, 'error');
+            }
+        });
+
+        // ================================================================
+        // NOTIFICATION SYSTEM
+        // ================================================================
+        function showNotification(message, type = 'info') {
+            const colors = {
+                success: '#00ff87',
+                error: '#ff4757',
+                info: '#00f0ff'
+            };
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderColor = colors[type];
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        console.log('📊 Dashboard ready!');
+        console.log('✅ Users are automatically approved!');
+        console.log('💡 No offline persistence enabled - smooth operation!');
+    </script>
+</body>
+</html>
